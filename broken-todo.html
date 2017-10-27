@@ -80,6 +80,7 @@
           this.$.todoValue.value = '';
         },
         cancel: function () {
+          this.set('todoValue', null);
           this.$.todoValue.value = '';
         },
         toggleEnabled: function (event) {
