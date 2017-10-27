@@ -80,6 +80,7 @@
           this.$.todoValue.value = '';
         },
         cancel: function () {
+          this.set('todoIndex', null);
           this.set('todoValue', null);
           this.$.todoValue.value = '';
         },
@@ -89,13 +90,20 @@
           const todo = this.get(`todos.${index}`);
 
           this.set(`todos.${index}.enabled`, !todo.enabled);
+
+          if (!todo.enabled && todo.value == this.todoValue) {
+            this.clearTodoValue();
+          }
         },
         edit: function (event) {
           const target = event.target;
           const index = +(target.parentElement.getAttribute('item-index'));
+          const todo = this.get(`todos.${index}`);
 
-          this.todoIndex = index;
-          this.todoValue = this.todos[index].value;
+          if (todo.enabled) {
+            this.todoIndex = index;
+            this.todoValue = this.todos[index].value;
+          }
         },
         disabledClass: function (isEnabled) {
           return isEnabled ? "enabled" : "disabled";
