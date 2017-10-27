@@ -11,8 +11,8 @@
 
     <div>
       <input id="todoValue" value="{{todoValue::input}}">
-      <button on-click="cancel">Cancel</button>
-      <button on-click="save">Save</button>
+      <button id="cancelButton" on-click="cancel" disabled="[[disableButtons(todoValue)]]">Cancel</button>
+      <button id="saveButton" on-click="save" disabled="[[disableButtons(todoValue)]]">Save</button>
     </div>
 
     <template is="dom-if" if="[[!todos.length]]">
@@ -57,17 +57,19 @@
           const index = this.todoIndex;
           const value = this.todoValue;
 
-          if (!index) {
-            this.push('todos', {
-              value,
-              enabled: true
-            });
-          } else {
-            const todo = this.todos[index];
-            this.set(`todos.${index}`, {
-              value,
-              enabled: todo.enabled
-            });
+          if (!this.valueIsEmpty(value)) {
+            if (!index) {
+              this.push('todos', {
+                value,
+                enabled: true
+              });
+            } else {
+              const todo = this.todos[index];
+              this.set(`todos.${index}`, {
+                value,
+                enabled: todo.enabled
+              });
+            }
           }
 
           this.clearTodoValue();
@@ -112,7 +114,13 @@
         },
         hasDoneTodos: function(todos) {
           return todos.base.some((todo) => todo.enabled === false);
-        }
+        },
+        disableButtons: function(value) {
+          return (!this.valueIsEmpty(value)) ? false : true;
+        },
+        valueIsEmpty: function(value) {
+          return (value === undefined || value === null || value.length === 0);
+        }		
       });
     })();
   </script>
