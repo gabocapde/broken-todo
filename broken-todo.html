@@ -58,7 +58,7 @@
           const value = this.todoValue;
 
           if (!this.valueIsEmpty(value)) {
-            if (!index) {
+            if (!Number.isInteger(index)) {
               this.push('todos', {
                 value,
                 enabled: true
