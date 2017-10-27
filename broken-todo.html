@@ -23,7 +23,7 @@
       <ul>
         <template is="dom-repeat" as="todo" items="[[todos]]">
           <li item-index$="[[index]]">
-            <input type="checkbox" on-click="toggleEnabled">
+            <input type="checkbox" on-click="toggleEnabled" class="checkbox-broken-todo">
             <span on-click="edit" class$="[[disabledClass(todo.enabled)]]">[[todo.value]]</span>
           </li>
         </template>
@@ -116,6 +116,11 @@
           }
 
           this.todos = todos.filter(function (todo) { return todo.enabled; });
+          
+          var remainingCheckBoxes = document.getElementsByClassName("checkbox-broken-todo");
+          for (var i = 0; i < remainingCheckBoxes.length; i++) {
+              remainingCheckBoxes[i].checked = false;
+          }          
         },
         hasDoneTodos: function(todos) {
           return todos.base.some((todo) => todo.enabled === false);
