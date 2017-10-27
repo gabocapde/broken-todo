@@ -51,25 +51,38 @@
           },
           todoIndex: {
             type: Number
+          },
+          maxNumberOfTodos: {
+            type: Number,
+            value: 10
           }
         },
         save: function () {
           const index = this.todoIndex;
           const value = this.todoValue;
+          const todos = this.todos;
+          const maxNumberOfTodos = this.maxNumberOfTodos;
 
-          if (!this.valueIsEmpty(value)) {
-            if (!Number.isInteger(index)) {
-              this.push('todos', {
-                value,
-                enabled: true
-              });
-            } else {
-              const todo = this.todos[index];
-              this.set(`todos.${index}`, {
-                value,
-                enabled: todo.enabled
-              });
-            }
+          if (this.valueIsEmpty(value)) {
+            return;
+          }
+
+          if(todos.length == maxNumberOfTodos) {
+            alert("This list only supports 10 items");
+            return;
+          }
+
+          if (!Number.isInteger(index)) {
+            this.push('todos', {
+              value,
+              enabled: true
+            });
+          } else {
+            const todo = this.todos[index];
+            this.set(`todos.${index}`, {
+              value,
+              enabled: todo.enabled
+            });
           }
 
           this.clearTodoValue();
